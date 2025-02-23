@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Тест на профессиональную ориентацию</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            margin: 0;
+            background-color: #f9f9f9;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        p {
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+        label {
+            display: block;
+            margin: 10px 0;
+        }
+        button {
+            width: 100%;
+            padding: 12px;
+            font-size: 18px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .result {
+            text-align: center;
+            font-size: 20px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Тест на профессиональную ориентацию</h1>
+    
+    <form id="testForm">
+        <p>1. Вам комфортнее работать:</p>
+        <label><input type="radio" name="question1" value="2"> В офисе, за компьютером</label>
+        <label><input type="radio" name="question1" value="2"> В выездных условиях</label>
+        <label><input type="radio" name="question1" value="2"> В мастерской</label>
+
+        <p>2. Как вы относитесь к частым командировкам?</p>
+        <label><input type="radio" name="question2" value="2"> Готов ездить хоть каждый день</label>
+        <label><input type="radio" name="question2" value="1"> Могу выезжать, но не слишком часто</label>
+        <label><input type="radio" name="question2" value="2"> Предпочитаю работать на одном месте</label>
+
+        <button type="button" onclick="calculateResult()">Пройти тест</button>
+    </form>
+
+    <div id="result" class="result"></div>
+
+    <script>
+        function calculateResult() {
+            let scoreOffice = 0;
+            let scoreField = 0;
+            let scoreStationary = 0;
+
+            const form = document.forms['testForm'];
+            const answers1 = form['question1'];
+            const answers2 = form['question2'];
+
+            for (let answer of answers1) {
+                if (answer.checked) {
+                    scoreField += parseInt(answer.value);
+                    break;
+                }
+            }
+            for (let answer of answers2) {
+                if (answer.checked) {
+                    scoreStationary += parseInt(answer.value);
+                    break;
+                }
+            }
+
+            let result = "Рекомендация: ";
+            if (scoreOffice >= scoreField && scoreOffice >= scoreStationary) {
+                result += "Офисная работа";
+            } else if (scoreField >= scoreOffice && scoreField >= scoreStationary) {
+                result += "Выездная работа";
+            } else {
+                result += "Стационарная работа";
+            }
+
+            document.getElementById('result').innerText = result;
+        }
+    </script>
+</body>
+</html>
