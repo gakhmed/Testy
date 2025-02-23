@@ -3,98 +3,108 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Тест на профессиональную ориентацию</title>
+    <title>Тест для сотрудников</title>
     <style>
         body {
             font-family: Arial, sans-serif;
+            margin: 20px;
             padding: 20px;
-            margin: 0;
-            background-color: #f9f9f9;
+            max-width: 600px;
+            background-color: #f4f4f4;
         }
         h1 {
             text-align: center;
-            margin-bottom: 20px;
         }
-        p {
-            font-size: 16px;
-            margin-bottom: 10px;
-        }
-        label {
-            display: block;
-            margin: 10px 0;
+        .question {
+            margin-bottom: 15px;
         }
         button {
-            width: 100%;
-            padding: 12px;
-            font-size: 18px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
+            display: block;
+            margin: 20px auto;
+            padding: 10px 20px;
+            font-size: 16px;
             cursor: pointer;
         }
-        button:hover {
-            background-color: #45a049;
-        }
-        .result {
+        #result {
             text-align: center;
-            font-size: 20px;
+            font-size: 18px;
+            font-weight: bold;
             margin-top: 20px;
         }
     </style>
 </head>
 <body>
-    <h1>Тест на профессиональную ориентацию</h1>
-    
+
+    <h1>Тест для сотрудников</h1>
+
     <form id="testForm">
-        <p>1. Вам комфортнее работать:</p>
-        <label><input type="radio" name="question1" value="2"> В офисе, за компьютером</label>
-        <label><input type="radio" name="question1" value="2"> В выездных условиях</label>
-        <label><input type="radio" name="question1" value="2"> В мастерской</label>
+        <div class="question">
+            <p>1. Что для вас комфортнее?</p>
+            <label><input type="radio" name="q1" value="1"> Работать за компьютером, общаться с клиентами</label><br>
+            <label><input type="radio" name="q1" value="2"> Выезжать на объекты, работать с техникой</label><br>
+            <label><input type="radio" name="q1" value="3"> Ремонтировать приборы в мастерской</label>
+        </div>
 
-        <p>2. Как вы относитесь к частым командировкам?</p>
-        <label><input type="radio" name="question2" value="2"> Готов ездить хоть каждый день</label>
-        <label><input type="radio" name="question2" value="1"> Могу выезжать, но не слишком часто</label>
-        <label><input type="radio" name="question2" value="2"> Предпочитаю работать на одном месте</label>
+        <div class="question">
+            <p>2. Как вы относитесь к частым разъездам по работе?</p>
+            <label><input type="radio" name="q2" value="1"> Предпочитаю офисную работу</label><br>
+            <label><input type="radio" name="q2" value="2"> Люблю разъезды и командировки</label><br>
+            <label><input type="radio" name="q2" value="3"> Лучше работать на одном месте</label>
+        </div>
 
-        <button type="button" onclick="calculateResult()">Пройти тест</button>
+        <div class="question">
+            <p>3. Какой тип работы вам интереснее?</p>
+            <label><input type="radio" name="q3" value="1"> Организация процессов, работа с людьми</label><br>
+            <label><input type="radio" name="q3" value="2"> Монтаж, настройка оборудования</label><br>
+            <label><input type="radio" name="q3" value="3"> Диагностика и ремонт приборов</label>
+        </div>
+
+        <div class="question">
+            <p>4. Как вы относитесь к работе с людьми?</p>
+            <label><input type="radio" name="q4" value="1"> Люблю общаться и решать вопросы</label><br>
+            <label><input type="radio" name="q4" value="2"> Могу работать с людьми, но предпочитаю технику</label><br>
+            <label><input type="radio" name="q4" value="3"> Лучше работаю с техникой, чем с людьми</label>
+        </div>
+
+        <div class="question">
+            <p>5. Что вас больше привлекает?</p>
+            <label><input type="radio" name="q5" value="1"> Работа в офисе, документация</label><br>
+            <label><input type="radio" name="q5" value="2"> Работа в движении, монтаж</label><br>
+            <label><input type="radio" name="q5" value="3"> Работа с электроникой, ремонт</label>
+        </div>
+
+        <button type="button" onclick="calculateResult()">Узнать результат</button>
     </form>
 
-    <div id="result" class="result"></div>
+    <div id="result"></div>
 
     <script>
         function calculateResult() {
-            let scoreOffice = 0;
-            let scoreField = 0;
-            let scoreStationary = 0;
+            let score = 0;
+            const questions = ["q1", "q2", "q3", "q4", "q5"];
 
-            const form = document.forms['testForm'];
-            const answers1 = form['question1'];
-            const answers2 = form['question2'];
-
-            for (let answer of answers1) {
-                if (answer.checked) {
-                    scoreField += parseInt(answer.value);
-                    break;
-                }
-            }
-            for (let answer of answers2) {
-                if (answer.checked) {
-                    scoreStationary += parseInt(answer.value);
-                    break;
+            for (let i = 0; i < questions.length; i++) {
+                let answer = document.querySelector('input[name="' + questions[i] + '"]:checked');
+                if (answer) {
+                    score += parseInt(answer.value);
+                } else {
+                    alert("Ответьте на все вопросы!");
+                    return;
                 }
             }
 
-            let result = "Рекомендация: ";
-            if (scoreOffice >= scoreField && scoreOffice >= scoreStationary) {
-                result += "Офисная работа";
-            } else if (scoreField >= scoreOffice && scoreField >= scoreStationary) {
-                result += "Выездная работа";
+            let resultText = "";
+            if (score <= 7) {
+                resultText = "Вам больше подходит офисная работа.";
+            } else if (score <= 12) {
+                resultText = "Вы хорошо подойдете для выездной работы.";
             } else {
-                result += "Стационарная работа";
+                resultText = "Вам подойдет работа в стационаре (ремонт приборов).";
             }
 
-            document.getElementById('result').innerText = result;
+            document.getElementById("result").innerText = resultText;
         }
     </script>
+
 </body>
 </html>
